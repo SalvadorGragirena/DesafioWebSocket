@@ -12,14 +12,11 @@ router.use(express.urlencoded({ extended: true }));
 
 
 router.get("/", async (req, res) => {
-    
         res.render("home");
-    
-  
 })
 
 router.get("/realtimeproducts", async (req, res) => {
-
+        res.render("realtimeproducts");
 })
 
 

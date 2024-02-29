@@ -1,0 +1,17 @@
+[
+  {
+    "title": "shampoo",
+    "description": "description",
+    "price": 110,
+    "thumbnail": [
+      "https://ejemplo.com/imagen177.jpg",
+      "https://ejemplo.com/imagen2.jpg",
+      "https://ejemplo.com/imagen3.jpg"
+    ],
+    "code": "n sgjn rjgero",
+    "stock": 1,
+    "ID": 1,
+    "status": true,
+    "category": "sport"
+  }
+  ]

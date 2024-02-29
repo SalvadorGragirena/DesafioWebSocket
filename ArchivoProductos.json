@@ -15,19 +15,16 @@
     "category": "sport"
   },
   {
-    "title": "shampoo 2",
-    "description": "description de shampoo hola",
-    "price": 110,
-    "thumbnail": [
-      "https://ejemplo.com/imagen177.jpg",
-      "https://ejemplo.com/imagen2.jpg",
-      "https://ejemplo.com/imagen3.jpg"
-    ],
-    "code": "n sfn rjgero",
-    "stock": 1,
+    "title": {
+      "title": "nuevo",
+      "description": "producto",
+      "price": "45",
+      "thumbnail": "lmvm",
+      "code": "141sce7C",
+      "stock": "74",
+      "category": "j fvnv"
+    },
     "ID": 2,
-    "status": true,
-    "category": "sport"
+    "status": true
   }
-
-  ]
+]

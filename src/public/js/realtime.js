@@ -1,16 +1,11 @@
 const socket = io();
 
-// Emitir el evento 'productos' al servidor cuando se carga la página
-/*document.addEventListener('DOMContentLoaded', () => {
-    socket.emit('productos');
-});*/
-
 // Solicitar los productos al conectarse al servidor
 socket.on('connect', () => {
     socket.emit('productos');
 });
 
-// Recibir los productos del servidor
+// Recibir los productos del servidor y mostrarlos en la página
 socket.on('productos-encontrados', (productos) => {
     const listaProductos = document.getElementById('lista-productos');
     listaProductos.innerHTML = ''; // Limpiamos la lista antes de agregar nuevos productos
@@ -66,4 +61,36 @@ socket.on('productos-encontrados', (productos) => {
         // Agregamos la tarjeta al contenedor de productos
         listaProductos.appendChild(cardDiv);
     });
+});
+
+// Manejar el envío del formulario para agregar un nuevo producto
+const formulario = document.getElementById('formulario');
+formulario.addEventListener('submit', (event) => {
+    event.preventDefault(); // Evitar que el formulario se envíe de forma predeterminada
+
+    // Obtener los valores del formulario
+    const titulo = document.getElementById('titulo').value;
+    const descripcion = document.getElementById('descripcion').value;
+    const precio = document.getElementById('precio').value;
+    const thumbnail = document.getElementById('thumbnail').value;
+    const codigo = document.getElementById('codigo').value;
+    const stock = document.getElementById('stock').value;
+    const categoria = document.getElementById('categoria').value;
+
+    // Crear un objeto con los datos del nuevo producto
+    const nuevoProducto = {
+        title: titulo,
+        description: descripcion,
+        price: precio,
+        thumbnail: thumbnail,
+        code: codigo,
+        stock: stock,
+        category: categoria
+    };
+
+    // Emitir el evento 'agregar-producto' al servidor con los datos del nuevo producto
+    socket.emit('agregar-producto', nuevoProducto);
+
+    // Limpiar el formulario después de enviar los datos
+    formulario.reset();
 });

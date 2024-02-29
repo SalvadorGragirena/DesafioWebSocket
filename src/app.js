@@ -49,4 +49,21 @@ io.on('connection', (socket) => {
             io.emit('productos-encontrados', { error: 'Error al obtener productos' });
         }
     });
+
+     // Manejar evento 'agregar-producto'
+     socket.on('agregar-producto', async (nuevoProducto) => {
+        try {
+            // Agregar el nuevo producto al sistema o realizar cualquier otra acción necesaria
+            console.log('Nuevo producto recibido:', nuevoProducto);
+            // Por ejemplo, puedes llamar a un método en tu ProductManager para agregar el producto
+            await managerProducto.addProduct(nuevoProducto);
+            // Emitir un evento para informar a todos los clientes sobre el nuevo producto
+            const ArrayProducts = await managerProducto.getProducts();
+            io.emit('productos-encontrados', ArrayProducts);
+        } catch (error) {
+            console.error('Error al agregar producto:', error);
+            // Puedes emitir un evento de error si lo deseas
+            io.emit('error-agregar-producto', { error: 'Error al agregar producto' });
+        }
+    });
 });

@@ -26,8 +26,6 @@ class ProductManager {
         try {
             const contenido = await fs.readFile(direccion, "utf-8");
             const parsedData = JSON.parse(contenido);
-
-            // Asegurarse de que parsedData sea un array
             this.products = Array.isArray(parsedData) ? parsedData : [parsedData];
 
             return this.products;
@@ -135,7 +133,5 @@ class ProductManager {
         }
     }
 }
-
-
 
 module.exports = ProductManager;

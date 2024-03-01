@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router(); 
 
 
-const ProductManager = require('../ProductManager'); // Importa la clase
+const ProductManager = require('../ProductManager'); 
 
 let manager = new ProductManager();
 

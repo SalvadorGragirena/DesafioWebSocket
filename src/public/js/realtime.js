@@ -42,11 +42,17 @@ socket.on('productos-encontrados', (productos) => {
         descriptionElement.classList.add('card-text');
         descriptionElement.textContent = producto.description;
 
-        // Creamos el botón de la tarjeta
-        const btnElement = document.createElement('a');
-        btnElement.href = '#'; // Enlace ficticio por ahora
-        btnElement.classList.add('btn', 'btn-primary');
-        btnElement.textContent = 'Ver más';
+         // Creamos el botón de la tarjeta
+         const btnElement = document.createElement('button');
+         btnElement.classList.add('btn', 'btn-primary');
+         btnElement.textContent = 'Eliminar';
+ 
+         // Agregamos el evento click para eliminar el producto
+         btnElement.addEventListener('click', function(event) {
+             // Emitimos un evento al servidor para eliminar el producto
+             socket.emit('eliminar-producto', producto.ID); // Suponiendo que el producto tiene un identificador único 'id'
+         });
+ 
 
         // Agregamos los elementos al cuerpo de la tarjeta
         cardBodyDiv.appendChild(titleElement);
@@ -72,7 +78,6 @@ formulario.addEventListener('submit', (event) => {
     const titulo = document.getElementById('titulo').value;
     const descripcion = document.getElementById('descripcion').value;
     const precio = document.getElementById('precio').value;
-    const thumbnail = document.getElementById('thumbnail').value;
     const codigo = document.getElementById('codigo').value;
     const stock = document.getElementById('stock').value;
     const categoria = document.getElementById('categoria').value;
@@ -82,7 +87,7 @@ formulario.addEventListener('submit', (event) => {
         title: titulo,
         description: descripcion,
         price: precio,
-        thumbnail: thumbnail,
+        thumbnail: ["hola","hola"],
         code: codigo,
         stock: stock,
         category: categoria
@@ -90,7 +95,13 @@ formulario.addEventListener('submit', (event) => {
 
     // Emitir el evento 'agregar-producto' al servidor con los datos del nuevo producto
     socket.emit('agregar-producto', nuevoProducto);
+    socket.on('producto-LogicaAdd', (respuesta) => {
+        // Mostrar un mensaje de confirmación al usuario
+        alert(respuesta);
+        console.log(respuesta);
+    });
 
     // Limpiar el formulario después de enviar los datos
     formulario.reset();
 });
+

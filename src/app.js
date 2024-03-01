@@ -27,7 +27,7 @@ app.use('/api/cartProducts/', cartsRouter);
 
 //Listen
 
-const httpServer =  app.listen(PUERTO, () => {
+const httpServer = app.listen(PUERTO, () => {
     console.log(`Escuchando en el puerto: ${PUERTO} `);
 })
 
@@ -50,20 +50,41 @@ io.on('connection', (socket) => {
         }
     });
 
-     // Manejar evento 'agregar-producto'
-     socket.on('agregar-producto', async (nuevoProducto) => {
+    // Manejar evento 'agregar-producto'
+    socket.on('agregar-producto', async (nuevoProducto) => {
         try {
             // Agregar el nuevo producto al sistema o realizar cualquier otra acción necesaria
-            console.log('Nuevo producto recibido:', nuevoProducto);
+            console.log('Nuevo producto recibido hola:', nuevoProducto);
             // Por ejemplo, puedes llamar a un método en tu ProductManager para agregar el producto
-            await managerProducto.addProduct(nuevoProducto);
+            const resp = await managerProducto.addProduct(nuevoProducto);
             // Emitir un evento para informar a todos los clientes sobre el nuevo producto
             const ArrayProducts = await managerProducto.getProducts();
             io.emit('productos-encontrados', ArrayProducts);
+            socket.emit('producto-LogicaAdd', resp);
         } catch (error) {
             console.error('Error al agregar producto:', error);
             // Puedes emitir un evento de error si lo deseas
-            io.emit('error-agregar-producto', { error: 'Error al agregar producto' });
+            socket.emit('producto-LogicaAdd', 'Error al agregar producto');
         }
     });
+
+
+    socket.on('eliminar-producto', async (idProducto) => {
+        try {
+            // Eliminar el producto del sistema o realizar cualquier otra acción necesaria
+            console.log('Producto a eliminar recibido:', idProducto);
+            // Llamar al método en ProductManager para eliminar el producto
+            await managerProducto.deleteProduct(idProducto);
+            // Emitir un evento para informar a todos los clientes sobre la actualización en los productos
+            const ArrayProducts = await managerProducto.getProducts();
+            io.emit('productos-encontrados', ArrayProducts);
+            // Emitir un evento para indicar que se ha eliminado el producto
+            socket.emit('producto-eliminado', { message: 'El producto ha sido eliminado' });
+        } catch (error) {
+            console.error('Error al eliminar producto:', error);
+            // Puedes emitir un evento de error si lo deseas
+            socket.emit('error-eliminar-producto', { error: 'Error al eliminar producto' });
+        }
+    });
+
 });

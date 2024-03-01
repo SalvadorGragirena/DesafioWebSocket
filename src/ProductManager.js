@@ -37,11 +37,13 @@ class ProductManager {
         }
     }
 
-    addProduct = async (title, description, price, thumbnail, code, stock, category) => {
+    addProduct = async (productoData) => {
         try {
             let ID;
             this.products = await this.readProduct(this.Path);
-
+    
+            const { title, description, price, thumbnail, code, stock, category } = productoData;
+    
             if (!this.products.some(p => p.code === code)) {
                 if (this.products.length !== 0) {
                     const identificadores = this.products.map(p => p.ID);
@@ -49,18 +51,19 @@ class ProductManager {
                 } else {
                     ID = 1;
                 }
-
+    
                 const nuevoProducto = new Producto(title, description, price, thumbnail, code, stock, ID, true, category);
                 this.products.push(nuevoProducto);
                 await fs.writeFile(this.Path, JSON.stringify(this.products, null, 2));
-                return 0;
+                return "Producto agregado con éxito";
             } else {
-                return 1;
+                return "No se pudo agregar producto, código de producto ya existe";
             }
         } catch (error) {
-            return "Error en agregar carrito " + error;
+            return "Error en agregar producto " + error;
         }
     }
+    
 
     getProducts = async () => {
         return await this.readProduct(this.Path);
